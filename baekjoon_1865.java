@@ -2,23 +2,38 @@
 // https://www.acmicpc.net/problem/1865
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 
 public class Main {
 
 	static int N, M, W;
 	static int[] dist;
 	static final int INF = 987654321;
-	static int[][] edge;
+	static ArrayList<Edge>[] edgeList;
 
-	public static void main(String[] args) throws IOException{
+	static class Edge{
+		int next, cost;
 
+		public Edge(int next, int cost) {
+
+			this.next = next;
+			this.cost = cost;
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int TC = Integer.parseInt(br.readLine());
 
-		while(TC != 0) {
+		while (TC != 0) {
 			TC--;
 
 			// input part
@@ -27,69 +42,69 @@ public class Main {
 			M = Integer.parseInt(st.nextToken());
 			W = Integer.parseInt(st.nextToken());
 
-			dist = new int[N];
-			edge = new int[N][N];
+			dist = new int[N + 1];
+			edgeList = new ArrayList[N + 1];
 
-			for(int i = 0; i < N; i++) {
-				for(int j = 0; j < N; j++)
-					edge[i][j] = INF;
+			for(int i = 0 ; i <= N; i++) {
+				edgeList[i] = new ArrayList<>();
 			}
 
-			for(int i = 0; i < M; i++) {
+
+			for (int i = 0; i < M; i++) {
 				st = new StringTokenizer(br.readLine());
-				int S = Integer.parseInt(st.nextToken()) - 1;
-				int E = Integer.parseInt(st.nextToken()) - 1;
+				int S = Integer.parseInt(st.nextToken());
+				int E = Integer.parseInt(st.nextToken());
 				int T = Integer.parseInt(st.nextToken());
-				edge[S][E] = T;
-				edge[E][S] = T;
+				// 양방향 그래프
+				edgeList[S].add(new Edge(E,T));
+				edgeList[E].add(new Edge(S,T));
 			}
 
-			for(int i = 0; i < W; i++) {
+			for (int i = 0; i < W; i++) {
 				st = new StringTokenizer(br.readLine());
-				int S = Integer.parseInt(st.nextToken()) - 1;
-				int E = Integer.parseInt(st.nextToken()) - 1;
-				int T = Integer.parseInt(st.nextToken()) * (-1);
-				if(edge[S][E] > T)
-					edge[S][E] = T;
+				int S = Integer.parseInt(st.nextToken());
+				int E = Integer.parseInt(st.nextToken());
+				int T = Integer.parseInt(st.nextToken());
+
+				edgeList[S].add(new Edge(E,-T));
 			}
 
-			boolean b = false;
-			for(int i = 0; i < N; i++) {
-				b = bellmanford(i);
-				if(b) {
-					System.out.println("YES");
-					break;
-				}
-			}
-			if(!b)
-				System.out.println("NO");
+			boolean b = bellmanford();
+
+			bw.write(b ? "YES\n" : "NO\n");
 
 		}
 
+		br.close();
+		bw.close();
 	}
 
-	static boolean bellmanford(int n) {
+	static boolean bellmanford() {
 
-		for(int i = 0 ; i < N; i++)
+		for (int i = 1; i <= N; i++)
 			dist[i] = INF;
+		
+		// 아무지점에서나 출발해도 찾을 수 있음
+		dist[1] = 0;
+		for (int i = 1; i < N; i++) {
+            for(int j = 1; j < edgeList.length; j++) {
+            	for(Edge e : edgeList[j]) {
+            		if(dist[e.next] > dist[j] + e.cost) {
+            			dist[e.next] = dist[j] + e.cost;
+            		}
+            	}
+            }
+        }
 
-		dist[n] = 0;
+		for(int j = 1; j < edgeList.length; j++) {
+        	for(Edge e : edgeList[j]) {
+        		if(dist[e.next] > dist[j] + e.cost) {
+        			return true;
+        		}
+        	}
+        }
 
-		boolean b = false;
+		return false;
 
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(edge[i][j] == INF)
-					continue;
-				if(dist[i] != INF && dist[j] > dist[i] + edge[i][j])
-					dist[j] = dist[i] + edge[i][j];
-			}
-		}
-
-
-		if(dist[n] < 0)
-			return true;
-		else
-			return false;
 	}
 }
