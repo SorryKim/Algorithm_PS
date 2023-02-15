@@ -17,24 +17,27 @@ void input() {
 		cin >> num;
 		v.push_back(num);
 	}
+
+	result = -1;
 }
 
 void solve() {
 
+	sort(v.begin(), v.end());
 	int left = 0;
-	int right = v[N - 1] - 1;
+	int right = v[N - 1];
 
 	while (left <= right) {
 
-		int cnt = 1;
 		int mid = (left + right) / 2;
+		int cnt = 1;
 		int start = v[0];
 
 		for (int i = 1; i < N; i++) {
-			int temp = v[i];
-			if (temp - start >= mid) {
+
+			if (v[i] - start >= mid) {
 				cnt++;
-				start = temp;
+				start = v[i];
 			}
 		}
 
@@ -42,9 +45,13 @@ void solve() {
 			result = mid;
 			left = mid + 1;
 		}
-		else 
+		else {
 			right = mid - 1;
+		}
+
 	}
+
+	cout << result << "\n";
 
 }
 
@@ -54,8 +61,5 @@ int main() {
 	cout.tie(NULL);
 
 	input();
-	sort(v.begin(), v.end());
 	solve();
-
-	cout << result << "\n";
 }
