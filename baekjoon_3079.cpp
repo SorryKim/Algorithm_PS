@@ -21,9 +21,9 @@ void input() {
 
 void solve() {
 
-    sort(arr, arr+ N);
+    sort(arr, arr + N);
     long long left = 0;
-    long long right = arr[N-1] * M;
+    long long right = arr[N - 1] * M;
 
     // mid값: 모든 인원이 심사를 받는 데 걸리는 시간
     while (left <= right) {
@@ -33,7 +33,10 @@ void solve() {
         long long temp = 0;
 
         for (int i = 0; i < N; i++) {
+            if (temp > M)
+                break;
             temp += (mid / arr[i]);
+            
         }
 
         // mid 시간에 심사를 다 받을 수 있는 경우
