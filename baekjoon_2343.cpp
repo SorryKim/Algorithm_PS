@@ -7,27 +7,30 @@
 using namespace std;
 
 int N, M;
-vector<int> v;
+vector<long long> v;
 long long low, high;
 
 void Input() {
 
     cin >> N >> M;
     low, high = 0;
+
     for (int i = 0; i < N; i++) {
-        int num;
+        long long num;
         cin >> num;
         v.push_back(num);
         high += num;
+        low = max(low, num);
     }
 
 }
 
 void Solve() {
 
-    sort(v.begin(), v.end());
+    // 강의의 순서가 바뀌면 안됨
+    //
+    // sort(v.begin(), v.end());
 
-   
     while (low <= high) {
 
         long long mid = (low + high) / 2;
@@ -40,7 +43,6 @@ void Solve() {
                 cnt++;
             }
             sum += v[i];
-                
         }
 
         if (sum != 0)
