@@ -12,7 +12,7 @@ long long solution(int n, vector<int> times) {
     sort(times.begin(), times.end());
     
     long long left = 0;
-    long long right = 10000000000000000;
+    long long right = (long long)times[times.size() - 1] * (long long)n;
 
     // mid값: 모든 인원이 심사를 받는 데 걸리는 시간
     while (left <= right) {
