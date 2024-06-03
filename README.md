@@ -11,19 +11,6 @@
 - [백준 온라인 저지](https://www.acmicpc.net/)
 - [프로그래머스](https://programmers.co.kr/)
 
-## 사용 방법
-
-1. 이 레포지토리를 클론합니다:
-    ```bash
-    git clone https://github.com/your-username/your-repository.git
-    ```
-2. 원하는 문제의 소스 코드를 확인하고 실행합니다. 예를 들어, `Baekjoon` 폴더의 문제를 실행하려면:
-    ```bash
-    cd Baekjoon
-    g++ 1000.cpp -o 1000
-    ./1000
-    ```
-
 ## 기여 방법
 
 기여를 환영합니다! 버그를 발견하거나 개선 사항이 있다면 이슈를 생성하거나 풀 리퀘스트를 보내주세요.
