@@ -9,27 +9,28 @@ int n;
 int arr[MAX + 1];
 bool check[MAX + 1];
 bool finished[MAX + 1];
-int team_count;
+int cnt;
 
-void DFS(int current) {
+void DFS(int now){
 
-    check[current] = true;
-    int next = arr[current];
+    check[now] = true;
+    int next = arr[now];
 
-    if (!check[next]) {
+    
+    if(!check[next]){
         DFS(next);
-    } else if (!finished[next]) {
+    }else if(!finished[next]){ // 방문은했지만 finished가 안된 상태 즉, 사이클 상태
+        cnt++;
+        finished[now] = true;
 
-        // 사이클이 발생한 경우
-        for (int i = next; i != current; i = arr[i]) {
-            team_count++;
-            finished[i] = true; // 사이클 내의 노드들을 처리
+        for(int i = next; i != now; i = arr[i]){
+            cnt++;
+            finished[i] = true;
         }
-        team_count++;
-        finished[current] = true; // 마지막 노드 처리
+        
     }
 
-    finished[current] = true; // 탐색 종료
+    finished[now] = true;
 }
 
 int main() {
@@ -43,7 +44,7 @@ int main() {
     while (T--) {
         cin >> n;
         int answer = 0;
-        team_count = 0;
+        cnt = 0;
 
         for(int i = 0; i <= n; i++){
             finished[i] = false;
@@ -52,7 +53,7 @@ int main() {
 
         for (int i = 1; i <= n; i++) 
             cin >> arr[i];
-        
+
 
         for (int i = 1; i <= n; i++) {
             if (!check[i]) {
@@ -60,7 +61,7 @@ int main() {
             }
         }
 
-        answer = n - team_count;
+        answer = n - cnt;
         cout << answer << '\n';
     }
 
