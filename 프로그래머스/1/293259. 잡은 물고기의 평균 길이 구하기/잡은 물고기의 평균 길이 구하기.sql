@@ -1,0 +1,5 @@
+SELECT ROUND(AVG(CASE 
+                   WHEN LENGTH IS NULL OR LENGTH <= 10.0 THEN 10.0 
+                   ELSE LENGTH 
+                 END), 2) AS AVERAGE_LENGTH
+FROM FISH_INFO;
