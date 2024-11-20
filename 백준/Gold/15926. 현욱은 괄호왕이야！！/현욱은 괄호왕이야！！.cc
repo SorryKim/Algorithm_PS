@@ -1,11 +1,9 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 #include <stack>
+#include <string>
+#include <algorithm>
 
 using namespace std;
-
-bool check[200001];
 
 int main() {
     ios::sync_with_stdio(false);
@@ -15,34 +13,26 @@ int main() {
     string s;
     cin >> n >> s;
 
-    int answer = 0;
     stack<int> st;
+    int answer = 0;
 
-    for(int i = 0; i < n; i++){
+    // 초기값으로 유효하지 않은 위치 설정
+    st.push(-1);
+
+    for (int i = 0; i < n; i++) {
+
         char now = s[i];
-
-        if(now == '('){
-            st.push(i);
-
-        }else{
-            if(!st.empty()){
-                for(int j = st.top(); j <= i; j++)
-                    check[j] = true;
-                st.pop(); 
-            }
-        }
-    }
-
-    int temp = 0;
-    for(int i = 0; i < n; i++){
-        if(!check[i])
-            temp = 0;
+        if(now == '(') st.push(i);
         else{
-            temp++;
-            answer = max(answer, temp);
+            if(!st.empty())
+                st.pop();
+            
+            if(st.empty()) st.push(i);
+            else answer = max(answer, i - st.top());
         }
     }
 
     cout << answer << '\n';
     return 0;
+
 }
