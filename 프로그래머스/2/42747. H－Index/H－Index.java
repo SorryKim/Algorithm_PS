@@ -17,7 +17,8 @@ class Solution {
                     cnt++;
             }
             
-            answer = Math.max(answer, Math.min(cnt, i));
+            int hidx = Math.min(cnt, i);
+            answer = Math.max(answer, hidx);
         }
         
         return answer;
