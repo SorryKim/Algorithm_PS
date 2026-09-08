@@ -1,49 +1,51 @@
 #include <string>
 #include <vector>
-#include <stack>
 #include <queue>
 
 using namespace std;
 
+
 vector<int> solution(vector<int> progresses, vector<int> speeds) {
-    vector<int> answer;
-    int arr[100] = { 0, };
-    stack<int> st;
-    vector<int> v;
+    vector<int> answer, left;
+    int N = progresses.size();
     
-    for(int i = 0; i < progresses.size(); i++){
-        
-        int now = progresses[i];
-        int speed = speeds[i];
-        
-        int temp = 1;
-        while(now + speed*temp < 100){
-            temp++;
-        }
-        
-        v.push_back(temp);
-        
-    }
-        
-    // 7 3 9 -> 2 1
-    // 5 10 1 1 20 1 -> 1 3 2
-    int cnt = 1;
-    int temp = v[0];
-    
-    for(int i = 1; i < v.size(); i++){
-        
-        if(temp >= v[i]){
+    for(int i = 0; i < N; i++){  
+        int cnt = 0;
+        int temp = progresses[i];
+        while(temp < 100){
             cnt++;
-        }else{
-            answer.push_back(cnt);
-            temp = v[i];
-            cnt = 1;
+            temp += speeds[i];
         }
-        
-        if(i == v.size() - 1)
-            answer.push_back(cnt);
+        left.push_back(cnt);
     }
     
+    queue<int> q;
+    
+    for(int i = 0; i < N; i++){
+        int now = left[i];
+        
+        if(q.empty()){
+            q.push(now);
+            continue;
+        }
+        
+        // 1. 작거나 같은 경우
+        if(now <= q.front()) q.push(now);
+        
+        // 2. now가 큰 경우
+        else{
+            int cnt = 0;
+            while(!q.empty() && q.front() < now){
+                cnt++;
+                q.pop();
+            }
+            answer.push_back(cnt);
+            q.push(now);
+        }
+    }
+    
+    // 남아있는 Task 처리
+    answer.push_back(q.size());
     
     return answer;
 }
