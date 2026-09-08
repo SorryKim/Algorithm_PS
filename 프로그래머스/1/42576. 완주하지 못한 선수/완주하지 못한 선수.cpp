@@ -1,29 +1,28 @@
 #include <string>
 #include <vector>
-#include <iostream>
 #include <unordered_map>
+#include <iostream>
+
 using namespace std;
 
 string solution(vector<string> participant, vector<string> completion) {
     string answer = "";
-    unordered_map<string, int> myMap;
     
-    for (string s : participant) {
-       myMap[s]++;
+    unordered_map<string, int> mp;
+    for(string s : participant){
+        mp[s]++;
     }
     
-
-    for (string s : completion) {
-        myMap[s]--;
+    for(string s : completion){
+        mp[s]--;
     }
     
-    
-    for (string s : participant) {
-       if(myMap.count(s) > 0 && myMap[s] > 0){
-           answer = s;
-           break;
-       }
+    for(auto a : mp){
+        if(a.second == 1){
+            answer = a.first;
+            break;
+        }
     }
-
+    
     return answer;
 }
