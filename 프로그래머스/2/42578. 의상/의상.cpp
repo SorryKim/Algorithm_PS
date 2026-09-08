@@ -1,29 +1,20 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <iostream>
 
 using namespace std;
 
 int solution(vector<vector<string>> clothes) {
     int answer = 1;
-    unordered_map<string,int> table;
+    unordered_map<string,int> mp;
     
-    for(auto a : clothes){
-        string now = a[1];
-        
-        if(table.find(now) == table.end()){
-            table.insert({now, 1});
-        }else{
-            table[now]++;
-        }
+    for(auto now : clothes){
+        string category = now[1];
+        mp[category]++;
     }
     
-    
-    for(auto a : table){
-        int cnt = a.second + 1;
-        answer *= cnt;
+    for(auto var : mp){
+        answer *= (var.second + 1);
     }
-    
     return answer - 1;
 }
