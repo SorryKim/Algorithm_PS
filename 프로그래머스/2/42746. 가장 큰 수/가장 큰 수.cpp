@@ -1,37 +1,33 @@
 #include <string>
 #include <vector>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
-vector<int> v;
-
-bool cmp(const int &a, const int &b) {
-    string n1 = to_string(a);
-    string n2 = to_string(b);
+bool cmp(const int &a, const int &b){
+    string s1 = to_string(a);
+    string s2 = to_string(b);
     
-    int num1 = stoi(n1 + n2);
-    int num2 = stoi(n2 + n1);
+    int n1 = stoi(s1 + s2);
+    int n2 = stoi(s2 + s1);
     
-    
-    return num1 > num2;
+    return n1 > n2;
 }
+
 
 string solution(vector<int> numbers) {
     string answer = "";
-
     sort(numbers.begin(), numbers.end(), cmp);
-
-    for (auto num : numbers) {
-        answer += to_string(num);
+    
+    int cnt = 0;
+    for(int i : numbers){
+        answer += to_string(i);
     }
     
-    bool flag = false;
-    for(auto a : answer){
-        if(a != '0')
-            flag = true;
+    while(answer.size() > 1 && answer[0] == '0'){
+        answer = answer.substr(1);
     }
     
-    return flag ? answer : "0";
+    return answer;
 }
