@@ -2,27 +2,29 @@
 #include <vector>
 
 using namespace std;
-int answer = 0;
 
-void DFS(int idx, int val, const vector<int> &numbers, int target){
+int N;
+int answer = 0;
+int TARGET;
+
+void DFS(int v, int depth, vector<int> &numbers){
     
-    if(idx >= numbers.size()){
-        if(val == target)
-            answer++;
-        
+    if(depth == N){
+        if(v == TARGET) answer++;
         return;
     }
     
+    DFS(v + numbers[depth], depth + 1, numbers);
+    DFS(v - numbers[depth], depth + 1, numbers);
     
-    int now = numbers[idx];
-    
-    DFS(idx + 1, val + now, numbers, target);
-    DFS(idx + 1, val - now, numbers, target);
-    
+    return;
 }
 
+
 int solution(vector<int> numbers, int target) {
+    N = numbers.size();
+    TARGET = target;
+    DFS(0, 0, numbers);
     
-    DFS(0,0,numbers,target);
     return answer;
 }
