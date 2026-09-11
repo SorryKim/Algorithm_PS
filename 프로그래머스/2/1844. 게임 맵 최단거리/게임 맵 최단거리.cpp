@@ -1,45 +1,49 @@
-#include<vector>
+#include <vector>
 #include <queue>
+
 using namespace std;
 
-bool visited[101][101] = { false, };
-int moveX[4] = {1,-1,0,0};
-int moveY[4] = {0,0,1,-1};
+struct State{
+    int x, y, cnt;
+};
+
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, -1, 1};
+
+int BFS(vector<vector<int>> &maps){
+ 
+    int N = maps.size();
+    int M = maps[0].size();
+    
+    vector<vector<bool>> visited(N, vector<bool>(M, false));
+    queue<State> q;
+    q.push({0,0,1});
+    visited[0][0] = true;
+    
+    while(!q.empty()){
+        int x = q.front().x;
+        int y = q.front().y;
+        int cnt = q.front().cnt;
+        q.pop();
+        
+        if(x == N - 1 && y == M - 1) return cnt;
+        
+        for(int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(nx >= 0 && nx < N && ny >= 0 && ny < M){
+                if(visited[nx][ny] || maps[nx][ny] == 0) continue;
+                visited[nx][ny] = true;
+                q.push({nx, ny, cnt + 1});
+            }
+        }
+    }
+    
+    return -1;
+}
 
 int solution(vector<vector<int>> maps)
 {
-    int answer = -1;
-    queue<pair<pair<int,int>,int>> q;
-    
-    int n = maps.size();
-    int m = maps[0].size();
-
-    q.push({{0,0},1});
-    visited[0][0] = true;
-    while(!q.empty()){
-        int x0 = q.front().first.first;
-        int y0 = q.front().first.second;
-        int dist = q.front().second;
-        if(x0 == n-1 && y0 == m-1)
-            answer = dist;
-        q.pop();
-        
-        for(int i = 0; i < 4; i++){
-            int nowX = x0 + moveX[i];
-            int nowY = y0 + moveY[i];
-            
-            if(nowX >= 0 && nowX < n && nowY >= 0 && nowY < m){
-                if(!visited[nowX][nowY] && maps[nowX][nowY] != 0){
-                    
-                    visited[nowX][nowY] = true;
-                    q.push({{nowX, nowY}, dist + 1});
-                }
-            }
-        }
-        
-    }
-    
-    
-    
+    int answer = BFS(maps);
     return answer;
 }
