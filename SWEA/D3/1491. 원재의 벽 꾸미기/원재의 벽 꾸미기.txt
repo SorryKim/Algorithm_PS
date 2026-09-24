@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int main(){
+
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int T;
+    cin >> T;
+
+    for(int test = 1; test <= T; test++){
+        long long ans = 1e18;
+        long long N, A, B;
+        cin >> N >> A >> B;
+
+        for(long long r = 1; r*r <= N; r++){
+            for(long long c = r; c*r <= N; c++){
+                ans = min(ans, A*abs(r - c) + B*(N - r*c));
+            }
+        }
+
+        cout << "#" << test << " " << ans << "\n";
+    }
+
+    return 0;
+}
