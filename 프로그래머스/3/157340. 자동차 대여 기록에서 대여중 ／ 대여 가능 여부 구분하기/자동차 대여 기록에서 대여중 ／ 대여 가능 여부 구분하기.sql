@@ -2,7 +2,7 @@ SELECT
     DISTINCT CAR_ID,
     CASE
         WHEN CAR_ID IN (
-            SELECT DISTINCT CAR_ID
+            SELECT CAR_ID
             FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY 
             WHERE START_DATE <= '20221016' AND END_DATE >= '20221016'
         ) THEN '대여중'
